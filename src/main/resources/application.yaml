@@ -1,0 +1,9 @@
+spring:
+  application.name: GiishToSQL
+  profiles.active: development
+  datasource:
+      url: jdbc:postgresql://postgres:5432/giish
+      username: root
+      password: abcdEF123456
+      driver-class-name: org.postgresql.Driver
+      initialize: true
