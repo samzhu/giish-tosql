@@ -31,7 +31,7 @@ public class Gift implements Serializable {
     // 描述
     @Column(name = "giftdescription")
     private String giftDescription;
-    // 不知
+    // 領取條件
     @Column(name = "giftreceivecondition")
     private String giftReceiveCondition;
     // 大圖 url

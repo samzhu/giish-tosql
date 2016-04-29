@@ -7,3 +7,15 @@ spring:
       password: abcdEF123456
       driver-class-name: org.postgresql.Driver
       initialize: true
+
+server.port: ${port:8080}
+
+parse.ApplicationId: ${parse.ApplicationId}
+parse.RESTAPIKey: ${parse.RESTAPIKey}
+
+
+#logging.level.org.hibernate.SQL: DEBUG
+#logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+#url: jdbc:postgresql://postgres:5432/giish
+

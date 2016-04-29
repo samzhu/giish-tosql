@@ -3,14 +3,17 @@ package com.giish.tosql.repository;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by SAM on 2016/4/23.
  */
-public class Parse {
+public class Parse<T> {
     private String urlCount = "https://api.parse.com/1/classes/%s?count=1&limit=0";
     private String urlQuery = "https://api.parse.com/1/classes/%s?limit=%d&skip=%d";
     private String urlObject = "https://api.parse.com/1/classes/%s/%s";
@@ -18,6 +21,8 @@ public class Parse {
     private String parseApplicationId;
     private String parseRESTAPIKey;
     private String objectname;
+
+    private int limit = 1000;
 
     public Parse(String parseApplicationId, String parseRESTAPIKey, String objectname) {
         this.parseApplicationId = parseApplicationId;
@@ -32,8 +37,28 @@ public class Parse {
         return count;
     }
 
+    public List<T> listAllClazz(Class<T> clazz) {
+        List<T> list = new ArrayList<T>();
+        Integer count = this.count();
+        int skip = 0;
+        while (list.size() < count) {
+            List<T> listtmp = this.listClazz(limit, skip, "-createdAt", clazz);
+            skip += limit;
+            list.addAll(listtmp);
+        }
+        return list;
+    }
+
+    //
+    public List<T> listClazz(Integer limit, Integer skip, String order, Class<T> clazz) {
+        List<T> list = null;
+        JSONObject json = null;
+        json = JSON.parseObject(this.getParseData(String.format(this.urlQuery, this.objectname, limit, skip) + (order != null ? "&order=" + order : "")));
+        list = JSON.parseArray(json.getJSONArray("results").toJSONString(), clazz);
+        return list;
+    }
+
     public JSONArray listAll() {
-        int limit = 100;
         int skip = 0;
         JSONArray jarray = new JSONArray();
         Integer count = this.count();
@@ -41,6 +66,7 @@ public class Parse {
             JSONArray jarray_tmp = this.list(limit, skip, "-createdAt");
             skip += limit;
             jarray.addAll(jarray_tmp);
+            System.out.println("all:"+count+",now:"+jarray.size());
         }
         return jarray;
     }
