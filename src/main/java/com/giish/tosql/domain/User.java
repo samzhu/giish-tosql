@@ -28,15 +28,15 @@ public class User implements Serializable {
     @Column(name = "email")
     private String email;
 
-    // 大頭貼??
+    // 使用者的大頭照
     @Column(name = "userphotourl")
     private String userPhotoUrl;
     // ?
-    @Column(name = "imageurl")
-    private String imageUrl;
+    //@Column(name = "imageurl")
+    //private String imageUrl;
     // ?
-    @Column(name = "userimage")
-    private String userImage;
+    //@Column(name = "userimage")
+    //private String userImage;
 
     // 臺北市
     @Column(name = "city")
@@ -61,6 +61,12 @@ public class User implements Serializable {
     // 自行輸入的姓名
     @Column(name = "accountname")
     private String accountName;
+
+    private String authtype;
+    private String authid;
+    private String authaccesstoken;
+    private Date authexpirationdate;
+
     @Column(name = "createdat")
     @JSONField(format="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private Date createdAt;

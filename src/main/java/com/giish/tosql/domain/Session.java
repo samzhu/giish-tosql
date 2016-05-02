@@ -10,20 +10,23 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by SAM on 2016/4/28.
+ * Created by SAM on 2016/5/1.
  */
 @Data
 @Entity
-public class Follow implements Serializable {
+public class Session implements Serializable {
     @Id
     @Column(name = "objectid")
     private String objectId;
-    @Column(name = "giftid")
-    private String giftId;
-    @Column(name = "posterid")
-    private String posterId;
-    @Column(name = "followerid")
-    private String followerId;
+
+    private Boolean restricted;
+    @Column(name = "sessiontoken")
+    private String sessionToken;
+
+    private String createdaction; // login or signup
+    private String authprovider; // facebook
+    private String userid;
+
     @Column(name = "createdat")
     @JSONField(format="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private Date createdAt;

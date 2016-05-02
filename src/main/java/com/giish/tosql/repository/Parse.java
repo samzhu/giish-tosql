@@ -20,19 +20,25 @@ public class Parse<T> {
 
     private String parseApplicationId;
     private String parseRESTAPIKey;
+    private String parseMasterKey;
     private String objectname;
 
     private int limit = 1000;
 
-    public Parse(String parseApplicationId, String parseRESTAPIKey, String objectname) {
+    public Parse(String parseApplicationId, String parseRESTAPIKey, String parseMasterKey, String objectname) {
         this.parseApplicationId = parseApplicationId;
         this.parseRESTAPIKey = parseRESTAPIKey;
+        this.parseMasterKey = parseMasterKey;
         this.objectname = objectname;
     }
 
     public Integer count() {
         JSONObject json = null;
-        json = JSON.parseObject(this.getParseData(String.format(this.urlCount, this.objectname)));
+        if(this.objectname.equals("_Session") || this.objectname.equals("_Installation")){
+            json = JSON.parseObject(this.getParseDataMaster(String.format(this.urlCount, this.objectname)));
+        }else{
+            json = JSON.parseObject(this.getParseData(String.format(this.urlCount, this.objectname)));
+        }
         Integer count = json.getInteger("count");
         return count;
     }
@@ -41,7 +47,7 @@ public class Parse<T> {
         List<T> list = new ArrayList<T>();
         Integer count = this.count();
         int skip = 0;
-        while (list.size() < count) {
+        while (list.size() < count && skip <= 10000) {
             List<T> listtmp = this.listClazz(limit, skip, "-createdAt", clazz);
             skip += limit;
             list.addAll(listtmp);
@@ -51,10 +57,16 @@ public class Parse<T> {
 
     //
     public List<T> listClazz(Integer limit, Integer skip, String order, Class<T> clazz) {
-        List<T> list = null;
+        List<T> list = new ArrayList<T>();
         JSONObject json = null;
-        json = JSON.parseObject(this.getParseData(String.format(this.urlQuery, this.objectname, limit, skip) + (order != null ? "&order=" + order : "")));
-        list = JSON.parseArray(json.getJSONArray("results").toJSONString(), clazz);
+        if(this.objectname.equals("_User") || this.objectname.equals("_Session") || this.objectname.equals("_Installation")){
+            json = JSON.parseObject(this.getParseDataMaster(String.format(this.urlQuery, this.objectname, limit, skip) + (order != null ? "&order=" + order : "")));
+        }else{
+            json = JSON.parseObject(this.getParseData(String.format(this.urlQuery, this.objectname, limit, skip) + (order != null ? "&order=" + order : "")));
+        }
+        if(json.getJSONArray("results") != null){
+            list = JSON.parseArray(json.getJSONArray("results").toJSONString(), clazz);
+        }
         return list;
     }
 
@@ -118,6 +130,27 @@ public class Parse<T> {
                 .url(url)
                 .header("X-Parse-Application-Id", this.parseApplicationId)
                 .header("X-Parse-REST-API-Key", this.parseRESTAPIKey)
+                .build();
+        Response response = null;
+        try {
+            response = client.newCall(request).execute();
+            ResponseBody rsbody = response.body();
+            data = rsbody.string();
+            rsbody.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
+    private String getParseDataMaster(String url) {
+        String data = null;
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .header("X-Parse-Application-Id", this.parseApplicationId)
+                .header("X-Parse-REST-API-Key", this.parseRESTAPIKey)
+                .header("X-Parse-Master-Key", this.parseMasterKey)
                 .build();
         Response response = null;
         try {

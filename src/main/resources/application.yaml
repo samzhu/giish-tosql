@@ -12,6 +12,7 @@ server.port: ${port:8080}
 
 parse.ApplicationId: ${parse.ApplicationId}
 parse.RESTAPIKey: ${parse.RESTAPIKey}
+parse.MasterKey: ${parse.MasterKey}
 
 
 #logging.level.org.hibernate.SQL: DEBUG
