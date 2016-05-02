@@ -3,9 +3,7 @@ package com.giish.tosql.domain;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -25,9 +23,13 @@ public class Follow implements Serializable {
     @Column(name = "followerid")
     private String followerId;
     @Column(name = "createdat")
-    @JSONField(format="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @JSONField(format = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private Date createdAt;
     @Column(name = "updatedat")
-    @JSONField(format="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @JSONField(format = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private Date updatedAt;
+
+    @OneToOne()
+    @JoinColumn(name = "followerid", insertable = false, updatable = false)
+    private User followeruser;
 }

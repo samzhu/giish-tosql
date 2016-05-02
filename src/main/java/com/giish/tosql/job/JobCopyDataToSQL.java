@@ -38,7 +38,7 @@ public class JobCopyDataToSQL {
     @Autowired
     private UserRepository userRepository;
 
-    @Scheduled(fixedRate = 5 * 60 * 1000, initialDelay = 1 * 1000)
+    @Scheduled(fixedRate = 30 * 60 * 1000, initialDelay = 1 * 1000)
     public void job() {
 
         worker.copyUser();
@@ -49,5 +49,7 @@ public class JobCopyDataToSQL {
         worker.copyNotification();
         worker.copySession();
         worker.copyInstallation();
+
+
     }
 }

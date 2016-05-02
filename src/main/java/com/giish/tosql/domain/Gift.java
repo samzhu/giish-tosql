@@ -3,11 +3,10 @@ package com.giish.tosql.domain;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by SAM on 2016/4/20.
@@ -63,10 +62,26 @@ public class Gift implements Serializable {
     // 時間
     //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd'T'HHmmss.SSS'Z'")
     @Column(name = "createdat")
-    @JSONField(format="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @JSONField(format = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private Date createdAt;
     //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd'T'HHmmss.SSS'Z'")
     @Column(name = "updatedat")
-    @JSONField(format="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @JSONField(format = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private Date updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "userid", insertable = false, updatable = false)
+    private User posteruser;
+
+    @OneToMany()
+    @JoinColumn(name = "giftid", insertable = false, updatable = false)
+    public List<Follow> follows;
+
+    @OneToMany()
+    @JoinColumn(name = "giftid", insertable = false, updatable = false)
+    public List<Comment> comments;
+
+    @OneToMany()
+    @JoinColumn(name = "giftid", insertable = false, updatable = false)
+    public List<Trade> trades;
 }

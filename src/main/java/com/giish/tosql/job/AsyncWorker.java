@@ -45,7 +45,7 @@ public class AsyncWorker {
     @Autowired
     private InstallationRepository installationRepository;
 
-    @Async
+    //@Async
     public void copyUser() {
         String className = "_User";
         Parse parse = new Parse<ParseUser>(this.parseApplicationId, this.parseRESTAPIKey, this.parseMasterKey, className);
@@ -73,7 +73,7 @@ public class AsyncWorker {
         ProcessController.setProcessData(className, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " 已經更新" + list.size());
     }
 
-    @Async
+    //@Async
     public void copyGift() {
         String className = "Gift";
         Parse parse = new Parse<Gift>(parseApplicationId, parseRESTAPIKey, this.parseMasterKey, className);
@@ -90,7 +90,7 @@ public class AsyncWorker {
         ProcessController.setProcessData(className, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " 已經更新" + list.size());
     }
 
-    @Async
+    //@Async
     public void copyTrade() {
         String className = "Trade";
         Parse parse = new Parse(parseApplicationId, parseRESTAPIKey, this.parseMasterKey, className);

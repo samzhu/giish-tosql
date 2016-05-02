@@ -3,9 +3,7 @@ package com.giish.tosql.domain;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -30,4 +28,18 @@ public class Trade implements Serializable {
     @Column(name = "updatedat")
     @JSONField(format="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private Date updatedAt;
+
+    @OneToOne()
+    @JoinColumn(name = "giftid", insertable = false, updatable = false)
+    private Gift gift;
+
+    @OneToOne()
+    @JoinColumn(name = "posterid", insertable = false, updatable = false)
+    private User posteruser;
+
+    @OneToOne()
+    @JoinColumn(name = "tradetouserid", insertable = false, updatable = false)
+    private User tradeToUser;
+
+
 }

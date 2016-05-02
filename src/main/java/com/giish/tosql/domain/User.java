@@ -3,12 +3,10 @@ package com.giish.tosql.domain;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * parse API有兩種用法
@@ -73,4 +71,10 @@ public class User implements Serializable {
     @Column(name = "updatedat")
     @JSONField(format="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private Date updatedAt;
+
+    @OneToMany()
+    @JoinColumn(name = "userid", insertable = false, updatable = false)
+    public List<Gift> gifts;
+
+
 }
